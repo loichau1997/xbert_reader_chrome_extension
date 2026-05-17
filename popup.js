@@ -216,7 +216,13 @@ async function inspectClients() {
     }
 
     function getTasks() {
-        return [...document.querySelectorAll("tr.task")];
+
+        const tbody = document.querySelector("tbody");
+    
+        if (!tbody) return [];
+    
+        return Array.from(tbody.querySelectorAll("tr"));
+    
     }
 
     const clients = getClients();
