@@ -24,7 +24,7 @@ async function inspectClients() {
     const originalDescription = descriptionEl.innerHTML;
 
     const API_BASE =
-        "https://b90c-14-187-77-107.ngrok-free.app";
+        "https://kabob-kindred-hardness.ngrok-free.dev";
 
     const wait = (ms) =>
         new Promise(resolve => setTimeout(resolve, ms));
@@ -123,12 +123,13 @@ async function inspectClients() {
 
     async function clickActivityTab() {
         console.log("Searching activity tab...");
-        const clockIcon = document.querySelector("app-icon.icon-clock ng-star-inserted");
-        if (!clockIcon) {
-            console.log("Comment icon not found");
+        const iconContainer = [...document.querySelectorAll(".icon-container")]
+            .find(el => el.querySelector("app-icon.icon-clock"));
+
+        if (!iconContainer) {
+            console.log("Clock icon container not found");
             return false;
         }
-        const iconContainer = clockIcon.closest(".icon-container");
 
         if (!iconContainer) {
             console.log("Icon container not found");
