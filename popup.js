@@ -122,6 +122,47 @@ async function inspectClients() {
 
     }
 
+    async function unselectClient(client, wait) {
+        console.log('Unselect client')
+        client.scrollIntoView({
+            behavior: "auto",
+            block: "center"
+        });
+    
+        await wait(300);
+    
+        client.click();
+    
+        await wait(2000);
+    }
+
+    async function selectClient(client) {
+
+        const titleElement = client.querySelector(".text");
+        if (!titleElement) return null;
+    
+        const clientName = titleElement.innerText.trim();
+    
+        if (!clientName || clientName === "All Clients") {
+            return null;
+        }
+    
+        // ensure visibility for long lists
+        client.scrollIntoView({
+            behavior: "auto",
+            block: "center"
+        });
+    
+        await wait(500);
+    
+        // click once
+        client.click();
+    
+        await wait(2000);
+    
+        return clientName;
+    }
+
     async function clickActivityTab() {
         console.log("Searching activity tab...");
         const iconContainer = [...document.querySelectorAll(".icon-container")]
@@ -235,19 +276,12 @@ async function inspectClients() {
         try {
             const client = clients[i];
 
-            const titleElement = client.querySelector(".text");
+            let clientName = await selectClient(client, wait);
 
-            if (!titleElement) continue;
-
-            const clientName = titleElement.innerText.trim();
-
-            if (!clientName || clientName === "All Clients") {
-                continue;
-            }
+            if (!clientName) continue;
 
             console.log("CLIENT:", clientName);
-            client.click();
-            await wait(5000);
+
             const tasks = getTasks();
             console.log(`TASKS FOUND: ${tasks.length}`);
             for (let j = 0; j < tasks.length; j++) {
@@ -274,8 +308,9 @@ async function inspectClients() {
                 } catch (taskError) {
                     console.error("TASK FAILED:", taskError);
                 }
-                await wait(3000);
+                await wait(2000);
             }
+            await unselectClient(client, wait);
         } catch (clientError) {
             console.error("CLIENT FAILED:", clientError);
         }
