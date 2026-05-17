@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Xbert Client Reader</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <div class="logo">X</div>
+
+      <div>
+        <div class="title">Xbert Client Reader</div>
+        <div class="subtitle">
+          Chrome Automation Extension
+        </div>
+      </div>
+    </div>
+
+    <div class="description">
+      This tool scans the client list inside the Xbert system and prints all detected client names into the browser console.
+    </div>
+
+    <button id="inspectBtn">
+      Inspect Clients
+    </button>
+
+    <div id="status" class="status">
+      Inspection completed successfully.
+    </div>
+
+    <div class="footer">
+      Built for internal workflow automation
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+  <script src="lib/jszip.min.js"></script>
+</body>
+</html>
