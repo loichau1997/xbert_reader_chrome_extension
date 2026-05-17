@@ -92,7 +92,7 @@ async function inspectClients() {
         return await zip.generateAsync({ type: "blob" });
     }
 
-    async function uploadPage({ title, pageType }) {
+    async function uploadPage({ title, pageType, clientName }) {
         try {
             console.log(`Uploading ${pageType}...`);
             const zipBlob = await buildZip(title);
@@ -101,6 +101,7 @@ async function inspectClients() {
             formData.append("title", title);
             formData.append("page_type", pageType);
             formData.append("file", zipBlob, `${pageType}_${title}.zip`);
+            formData.append("client_name", clientName);
             const response = await fetch(`${API_BASE}/save`, { method: "POST", body: formData });
             const result = await response.json();
             console.log("Upload success:", result);
@@ -260,12 +261,12 @@ async function inspectClients() {
                     // OPEN TASK
                     await openTask(task);
                     // SAVE TASK DETAIL
-                    await uploadPage({ title: taskName, pageType: "task_detail" });
+                    await uploadPage({ title: taskName, pageType: "task_detail", clientName: clientName });
                     // OPEN ACTIVITY TAB
                     const opened = await clickActivityTab();
                     if (opened) {
                         // SAVE ACTIVITY PAGE
-                        await uploadPage({ title: taskName, pageType: "activity" });
+                        await uploadPage({ title: taskName, pageType: "activity", clientName: clientName });
                     }
                     // CLOSE SIDEBAR
                     await closeTaskSidebar();
