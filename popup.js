@@ -94,7 +94,7 @@ async function inspectClients() {
 
     async function uploadPage({ title, pageType }) {
         try {
-            setProgress(`Uploading ${pageType}...`);
+            console.log(`Uploading ${pageType}...`);
             const zipBlob = await buildZip(title);
             const formData = new FormData();
             formData.append("url", window.location.href);
@@ -103,7 +103,7 @@ async function inspectClients() {
             formData.append("file", zipBlob, `${pageType}_${title}.zip`);
             const response = await fetch(`${API_BASE}/save`, { method: "POST", body: formData });
             const result = await response.json();
-            setProgress("Upload success:", result);
+            console.log("Upload success:", result);
         } catch (error) {
             console.error("Upload failed:", error);
         }
@@ -122,16 +122,16 @@ async function inspectClients() {
     }
 
     async function clickActivityTab() {
-        setProgress("Searching activity tab...");
-        const commentIcon = document.querySelector("app-icon.icon-comment");
-        if (!commentIcon) {
-            setProgress("Comment icon not found");
+        console.log("Searching activity tab...");
+        const clockIcon = document.querySelector("app-icon.icon-clock ng-star-inserted");
+        if (!clockIcon) {
+            console.log("Comment icon not found");
             return false;
         }
-        const iconContainer = commentIcon.closest(".icon-container");
+        const iconContainer = clockIcon.closest(".icon-container");
 
         if (!iconContainer) {
-            setProgress("Icon container not found");
+            console.log("Icon container not found");
             return false;
 
         }
@@ -161,7 +161,7 @@ async function inspectClients() {
 
         await wait(4000);
 
-        setProgress(
+        console.log(
             "Activity tab clicked"
         );
 
@@ -172,7 +172,7 @@ async function inspectClients() {
     async function closeTaskSidebar() {
         const closeButton = document.querySelector('div.action.cursor-pointer[title="Close"]');
         if (!closeButton) {
-            setProgress("Close button not found");
+            console.log("Close button not found");
             return false;
         }
         closeButton.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -194,7 +194,7 @@ async function inspectClients() {
         });
 
         await wait(3000);
-        setProgress("Sidebar closed");
+        console.log("Sidebar closed");
         return true;
 
     }
@@ -203,7 +203,7 @@ async function inspectClients() {
         const itemsDivs = document.querySelectorAll("div.items");
         const targetDiv = itemsDivs[1];
         if (!targetDiv) {
-            setProgress("Second items div not found");
+            console.log("Second items div not found");
             return [];
         }
 
@@ -221,7 +221,7 @@ async function inspectClients() {
 
     const clients = getClients();
 
-    setProgress("CLIENTS FOUND:", clients.length);
+    console.log("CLIENTS FOUND:", clients.length);
 
     for (let i = 0; i < clients.length; i++) {
         try {
@@ -237,11 +237,11 @@ async function inspectClients() {
                 continue;
             }
 
-            setProgress("CLIENT:", clientName);
+            console.log("CLIENT:", clientName);
             client.click();
             await wait(5000);
             const tasks = getTasks();
-            setProgress(`TASKS FOUND: ${tasks.length}`);
+            console.log(`TASKS FOUND: ${tasks.length}`);
             for (let j = 0; j < tasks.length; j++) {
                 try {
                     const task = tasks[j];
@@ -249,7 +249,7 @@ async function inspectClients() {
                     if (!taskTitle) continue;
                     const taskName = sanitize(taskTitle.innerText.trim());
                     if (!taskName) continue;
-                    setProgress(`TASK ${j + 1}:`, taskName);
+                    console.log(`TASK ${j + 1}:`, taskName);
                     // OPEN TASK
                     await openTask(task);
                     // SAVE TASK DETAIL
@@ -273,5 +273,5 @@ async function inspectClients() {
         }
         await wait(3000);
     }
-    setProgress("DONE");
+    console.log("DONE");
 }
